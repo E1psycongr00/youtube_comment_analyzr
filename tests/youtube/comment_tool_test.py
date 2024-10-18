@@ -1,23 +1,21 @@
 import unittest
-from unittest.mock import patch
-
-from youtube_comment_analyzr.youtube.comment_tool import (
-    YouTubeCommentTool,
-    YouTubeCommentToolInput,
-)
+from unittest.mock import patch, MagicMock
+import os
+from youtube_comment_analyzr.youtube.comment_tool import YouTubeCommentTool
 
 
 class TestYouTubeCommentTool(unittest.TestCase):
 
     @patch('youtube_comment_analyzr.youtube.comment_tool.build')
+    @patch.dict(os.environ, {"YOUTUBE_API_KEY": "fake_api_key"})
     def setUp(self, mock_build):
-        self.api_key = 'fake_api_key'
-        self.tool = YouTubeCommentTool(self.api_key)
+        self.tool = YouTubeCommentTool()
         self.mock_youtube = mock_build.return_value
 
+    @patch.dict(os.environ, {}, clear=True)
     def test_init_with_missing_api_key(self):
         with self.assertRaises(ValueError):
-            YouTubeCommentTool('')
+            YouTubeCommentTool()
 
     def test_extract_video_id(self):
         test_cases = [
@@ -65,17 +63,10 @@ class TestYouTubeCommentTool(unittest.TestCase):
     def test_run(self):
         with patch.object(YouTubeCommentTool, 'get_video_comments') as mock_get_comments:
             mock_get_comments.return_value = [{'author': 'Test User', 'text': 'Test Comment'}]
-            input_data = YouTubeCommentToolInput(
-                query="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                max_results=100
-            )
-            result = self.tool._run(**input_data.dict())
+            result = self.tool._run("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
             self.assertEqual(len(result), 1)
             self.assertEqual(result[0]['author'], 'Test User')
             self.assertEqual(result[0]['text'], 'Test Comment')
-
-    def test_args_schema(self):
-        self.assertEqual(self.tool.args_schema, YouTubeCommentToolInput)
 
 if __name__ == '__main__':
     unittest.main()

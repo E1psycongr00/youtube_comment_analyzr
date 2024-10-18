@@ -1,3 +1,4 @@
+import os
 import re
 from typing import Any, Dict, List, Type
 
@@ -14,25 +15,24 @@ class YouTubeCommentToolInput(BaseModel):
 class YouTubeCommentTool(BaseTool):
     """
     YouTubeCommentTool 클래스는 YouTube API를 사용하여 특정 비디오의 댓글을 가져오는 기능을 제공합니다.
-    이 클래스는 YouTube API 키를 초기화하고, 비디오 ID 또는 URL을 통해 댓글을 가져올 수 있습니다.
+    이 클래스는 환경 변수에서 YouTube API 키를 가져오고, 비디오 ID 또는 URL을 통해 댓글을 가져올 수 있습니다.
     """
 
     name: str = "YouTube Comment Tool"
     description: str = "YouTube 비디오의 댓글을 가져오는 도구입니다. 비디오 URL 또는 ID를 입력으로 받습니다."
     args_schema: Type[BaseModel] = YouTubeCommentToolInput
-    youtube: Any = None
 
-    def __init__(self, api_key: str):
+    def __init__(self):
         """
         YouTubeCommentTool 클래스의 생성자입니다.
-        YouTube API 키를 초기화합니다.
+        환경 변수에서 YouTube API 키를 가져옵니다.
 
-        :param api_key: YouTube API 키
-        :raises ValueError: YouTube API 키가 제공되지 않았을 경우
+        :raises ValueError: YouTube API 키가 환경 변수에 설정되지 않았을 경우
         """
         super().__init__()
+        api_key = os.environ.get("YOUTUBE_API_KEY")
         if not api_key:
-            raise ValueError("YouTube API 키가 제공되지 않았습니다.")
+            raise ValueError("YOUTUBE_API_KEY 환경 변수가 설정되지 않았습니다.")
         self.youtube = build("youtube", "v3", developerKey=api_key)
 
     def _run(self, query: str, max_results: int = 100) -> List[Dict[str, Any]]:
