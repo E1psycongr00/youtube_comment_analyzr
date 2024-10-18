@@ -21,6 +21,7 @@ class YouTubeCommentTool(BaseTool):
     name: str = "YouTube Comment Tool"
     description: str = "YouTube 비디오의 댓글을 가져오는 도구입니다. 비디오 URL 또는 ID를 입력으로 받습니다."
     args_schema: Type[BaseModel] = YouTubeCommentToolInput
+    youtube: Any = None
 
     def __init__(self):
         """
