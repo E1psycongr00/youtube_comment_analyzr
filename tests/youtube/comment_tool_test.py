@@ -1,6 +1,7 @@
-import unittest
-from unittest.mock import patch, MagicMock
 import os
+import unittest
+from unittest.mock import patch
+
 from youtube_comment_analyzr.youtube.comment_tool import YouTubeCommentTool
 
 
