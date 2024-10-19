@@ -1,5 +1,7 @@
 from typing import List, TypedDict
 
+from youtube_comment_analyzr.youtube.comment_tool import YouTubeComment
+
 
 class CommentGraphState(TypedDict):
     """
@@ -14,10 +16,11 @@ class CommentGraphState(TypedDict):
         documents: list of documents.
         comments: list of comments.
     """
+
     question: str
     generation: str
     keyword: str
     youtube_url_or_id: str
     web_search: str
     documents: List[str]
-    comments: List[str]
+    comments: List[YouTubeComment]
