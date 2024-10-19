@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Any, Dict, List, Type
+from typing import Any, List, Type, TypedDict
 
 from googleapiclient.discovery import build
 from langchain.tools import BaseTool
@@ -10,6 +10,13 @@ from pydantic import BaseModel, Field
 class YouTubeCommentToolInput(BaseModel):
     query: str = Field(..., description="YouTube 비디오 URL 또는 ID")
     max_results: int = Field(100, description="가져올 댓글의 최대 수")
+
+
+class YouTubeComment(TypedDict):
+    author: str
+    text: str
+    likes: int
+    published_at: str
 
 
 class YouTubeCommentTool(BaseTool):
@@ -36,7 +43,7 @@ class YouTubeCommentTool(BaseTool):
             raise ValueError("YOUTUBE_API_KEY 환경 변수가 설정되지 않았습니다.")
         self.youtube = build("youtube", "v3", developerKey=api_key)
 
-    def _run(self, query: str, max_results: int = 100) -> List[Dict[str, Any]]:
+    def _run(self, query: str, max_results: int = 100) -> List[YouTubeComment]:
         """
         특정 비디오의 댓글을 가져옵니다.
 
@@ -49,7 +56,7 @@ class YouTubeCommentTool(BaseTool):
 
     def get_video_comments(
         self, video_id: str, max_results: int = 100
-    ) -> List[Dict[str, Any]]:
+    ) -> List[YouTubeComment]:
         """
         특정 비디오의 댓글을 가져옵니다.
 
