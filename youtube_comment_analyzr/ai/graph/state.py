@@ -1,4 +1,4 @@
-from typing import List, TypedDict
+from typing import Any, List, TypedDict
 
 from youtube_comment_analyzr.youtube.comment_tool import YouTubeComment
 
@@ -15,6 +15,7 @@ class CommentGraphState(TypedDict):
         web_search: whether to add search.
         documents: list of documents.
         comments: list of comments.
+        bad_users: list of bad users.
     """
 
     question: str
@@ -24,3 +25,4 @@ class CommentGraphState(TypedDict):
     web_search: str
     documents: List[str]
     comments: List[YouTubeComment]
+    bad_users: List[Any]
