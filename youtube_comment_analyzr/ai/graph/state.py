@@ -16,6 +16,7 @@ class CommentGraphState(TypedDict):
         documents: list of documents.
         comments: list of comments.
         bad_users: list of bad users.
+        political_bias: political bias.
     """
 
     question: str
@@ -26,3 +27,4 @@ class CommentGraphState(TypedDict):
     documents: List[str]
     comments: List[YouTubeComment]
     bad_users: List[Any]
+    political_bias: Any
