@@ -29,6 +29,10 @@ streamlit = "^1.39.0"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^7.2.2"
+ruff = "^0.7.0"
+
+[tool.ruff.lint.per-file-ignores]
+"**/*.pyi" = ["F401", "F404"]  
 
 [build-system]
 requires = ["poetry-core"]
