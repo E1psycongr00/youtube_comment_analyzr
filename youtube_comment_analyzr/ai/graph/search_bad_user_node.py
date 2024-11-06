@@ -42,4 +42,3 @@ def search_bad_user_node(state: CommentGraphState):
     if not isinstance(response, SearchBadUserOutput):
         raise ValueError("Invalid response type")
     return {**state, "bad_users": response.bad_users}
-
