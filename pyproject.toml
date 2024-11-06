@@ -34,6 +34,11 @@ ruff = "^0.7.0"
 [tool.ruff.lint.per-file-ignores]
 "**/*.pyi" = ["F401", "F404"]  
 
+[tool.ruff.format]
+exclude = [
+    "**/*.pyi"
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
